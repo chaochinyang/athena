@@ -145,6 +145,36 @@ class HistoryOutput : public OutputType {
 };
 
 //----------------------------------------------------------------------------------------
+//! \class IntX1X2Output
+//! \brief derived OutputType class for integrals over x1 and x2 directions
+
+class IntX1X2Output : public OutputType {
+ public:
+  explicit IntX1X2Output(OutputParameters oparams) : OutputType(oparams) {}
+  void WriteOutputFile(Mesh *pm, ParameterInput *pin, bool flag) override {}
+};
+
+//----------------------------------------------------------------------------------------
+//! \class IntX1X3Output
+//! \brief derived OutputType class for integrals over x1 and x3 directions
+
+class IntX1X3Output : public OutputType {
+ public:
+  explicit IntX1X3Output(OutputParameters oparams) : OutputType(oparams) {}
+  void WriteOutputFile(Mesh *pm, ParameterInput *pin, bool flag) override {}
+};
+
+//----------------------------------------------------------------------------------------
+//! \class IntX2X3Output
+//! \brief derived OutputType class for integrals over x2 and x3 directions
+
+class IntX2X3Output : public OutputType {
+ public:
+  explicit IntX2X3Output(OutputParameters oparams) : OutputType(oparams) {}
+  void WriteOutputFile(Mesh *pm, ParameterInput *pin, bool flag) override {}
+};
+
+//----------------------------------------------------------------------------------------
 //! \class FormattedTableOutput
 //! \brief derived OutputType class for formatted table (tabular) data
 
