@@ -7,6 +7,7 @@
 //! \brief implements non-trivial functions of IntX[123]X[123]Output classes.
 
 // C/C++ headers
+#include <sstream>  // endl, stringstream, <<
 
 // Athena++ headers
 #include "outputs.hpp"
@@ -17,6 +18,9 @@
 //      array in x3.
 
 void IntX1X2Output::WriteOutputFile(Mesh *pm, ParameterInput *pin, bool flag) {
+  std::stringstream msg;
+  msg << "IntX1X2Output: not implemented " << std::endl;
+  ATHENA_ERROR(msg);
 }
 
 //----------------------------------------------------------------------------------------
@@ -25,6 +29,9 @@ void IntX1X2Output::WriteOutputFile(Mesh *pm, ParameterInput *pin, bool flag) {
 //      array in x2.
 
 void IntX1X3Output::WriteOutputFile(Mesh *pm, ParameterInput *pin, bool flag) {
+  std::stringstream msg;
+  msg << "IntX1X3Output: not implemented " << std::endl;
+  ATHENA_ERROR(msg);
 }
 
 //----------------------------------------------------------------------------------------
@@ -33,4 +40,7 @@ void IntX1X3Output::WriteOutputFile(Mesh *pm, ParameterInput *pin, bool flag) {
 //      array in x1.
 
 void IntX2X3Output::WriteOutputFile(Mesh *pm, ParameterInput *pin, bool flag) {
+  std::stringstream msg;
+  msg << "IntX2X3Output: not implemented " << std::endl;
+  ATHENA_ERROR(msg);
 }
