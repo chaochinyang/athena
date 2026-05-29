@@ -7,9 +7,11 @@
 //! \brief implements non-trivial functions of IntX[123]X[123]Output classes.
 
 // C/C++ headers
-#include <sstream>  // endl, stringstream, <<
+#include <iostream>  // cout, endl, <<
+#include <sstream>  // stringstream
 
 // Athena++ headers
+#include "../mesh/mesh.hpp"  // time
 #include "outputs.hpp"
 
 //----------------------------------------------------------------------------------------
@@ -18,9 +20,13 @@
 //      array in x3.
 
 void IntX1X2Output::WriteOutputFile(Mesh *pm, ParameterInput *pin, bool flag) {
-  std::stringstream msg;
-  msg << "IntX1X2Output: not implemented " << std::endl;
-  ATHENA_ERROR(msg);
+  std::cout << "IntX1X2Output: under construction; "
+            << "\n\tt = " << pm->time
+            << "\n\tnext_time = " << output_params.next_time
+            << "\n\tdt = " << output_params.dt << std::endl;
+
+  // Update output parameters.
+  output_params.next_time += output_params.dt;
 }
 
 //----------------------------------------------------------------------------------------
