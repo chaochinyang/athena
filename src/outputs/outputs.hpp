@@ -145,12 +145,22 @@ class HistoryOutput : public OutputType {
 };
 
 //----------------------------------------------------------------------------------------
+//! \class Int2DOutput
+//! \brief derived OutputType class for integrals over two dimensions
+
+class Int2DOutput : public OutputType {
+ public:
+  explicit Int2DOutput(OutputParameters oparams) : OutputType(oparams) {}
+  virtual void WriteOutputFile(Mesh *pm, ParameterInput *pin, bool flag) = 0;
+};
+
+//----------------------------------------------------------------------------------------
 //! \class IntX1X2Output
 //! \brief derived OutputType class for integrals over x1 and x2 directions
 
-class IntX1X2Output : public OutputType {
+class IntX1X2Output : public Int2DOutput {
  public:
-  explicit IntX1X2Output(OutputParameters oparams) : OutputType(oparams) {}
+  explicit IntX1X2Output(OutputParameters oparams) : Int2DOutput(oparams) {}
   void WriteOutputFile(Mesh *pm, ParameterInput *pin, bool flag) override;
 };
 
@@ -158,9 +168,9 @@ class IntX1X2Output : public OutputType {
 //! \class IntX1X3Output
 //! \brief derived OutputType class for integrals over x1 and x3 directions
 
-class IntX1X3Output : public OutputType {
+class IntX1X3Output : public Int2DOutput {
  public:
-  explicit IntX1X3Output(OutputParameters oparams) : OutputType(oparams) {}
+  explicit IntX1X3Output(OutputParameters oparams) : Int2DOutput(oparams) {}
   void WriteOutputFile(Mesh *pm, ParameterInput *pin, bool flag) override;
 };
 
@@ -168,9 +178,9 @@ class IntX1X3Output : public OutputType {
 //! \class IntX2X3Output
 //! \brief derived OutputType class for integrals over x2 and x3 directions
 
-class IntX2X3Output : public OutputType {
+class IntX2X3Output : public Int2DOutput {
  public:
-  explicit IntX2X3Output(OutputParameters oparams) : OutputType(oparams) {}
+  explicit IntX2X3Output(OutputParameters oparams) : Int2DOutput(oparams) {}
   void WriteOutputFile(Mesh *pm, ParameterInput *pin, bool flag) override;
 };
 
