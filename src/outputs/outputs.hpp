@@ -151,7 +151,7 @@ class HistoryOutput : public OutputType {
 class IntX1X2Output : public OutputType {
  public:
   explicit IntX1X2Output(OutputParameters oparams) : OutputType(oparams) {}
-  void WriteOutputFile(Mesh *pm, ParameterInput *pin, bool flag) override {}
+  void WriteOutputFile(Mesh *pm, ParameterInput *pin, bool flag) override;
 };
 
 //----------------------------------------------------------------------------------------
@@ -161,7 +161,7 @@ class IntX1X2Output : public OutputType {
 class IntX1X3Output : public OutputType {
  public:
   explicit IntX1X3Output(OutputParameters oparams) : OutputType(oparams) {}
-  void WriteOutputFile(Mesh *pm, ParameterInput *pin, bool flag) override {}
+  void WriteOutputFile(Mesh *pm, ParameterInput *pin, bool flag) override;
 };
 
 //----------------------------------------------------------------------------------------
@@ -171,7 +171,7 @@ class IntX1X3Output : public OutputType {
 class IntX2X3Output : public OutputType {
  public:
   explicit IntX2X3Output(OutputParameters oparams) : OutputType(oparams) {}
-  void WriteOutputFile(Mesh *pm, ParameterInput *pin, bool flag) override {}
+  void WriteOutputFile(Mesh *pm, ParameterInput *pin, bool flag) override;
 };
 
 //----------------------------------------------------------------------------------------
