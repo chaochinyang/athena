@@ -24,6 +24,7 @@ void IntX1X2Output::WriteOutputFile(Mesh *pm, ParameterInput *pin, bool flag) {
             << "\n\tt = " << pm->time
             << "\n\tnext_time = " << output_params.next_time
             << "\n\tdt = " << output_params.dt << std::endl;
+  std::cout << "IntX1X2Output: fname = '" << fname << "'" << std::endl;
 
   // Update output parameters.
   output_params.next_time += output_params.dt;
@@ -35,6 +36,7 @@ void IntX1X2Output::WriteOutputFile(Mesh *pm, ParameterInput *pin, bool flag) {
 //      array in x2.
 
 void IntX1X3Output::WriteOutputFile(Mesh *pm, ParameterInput *pin, bool flag) {
+  std::cout << "IntX1X3Output: fname = '" << fname << "'" << std::endl;
   std::stringstream msg;
   msg << "IntX1X3Output: not implemented " << std::endl;
   ATHENA_ERROR(msg);
@@ -46,6 +48,7 @@ void IntX1X3Output::WriteOutputFile(Mesh *pm, ParameterInput *pin, bool flag) {
 //      array in x1.
 
 void IntX2X3Output::WriteOutputFile(Mesh *pm, ParameterInput *pin, bool flag) {
+  std::cout << "IntX2X3Output: fname = '" << fname << "'" << std::endl;
   std::stringstream msg;
   msg << "IntX2X3Output: not implemented " << std::endl;
   ATHENA_ERROR(msg);
