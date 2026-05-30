@@ -8,20 +8,47 @@
 
 // C/C++ headers
 #include <iostream>  // cout, endl, <<
-#include <sstream>  // stringstream
+#include <sstream>   // stringstream
+#include <string>    // string, to_string
+#include <vector>
 
 // Athena++ headers
-#include "../mesh/mesh.hpp"  // time
+#include "../mesh/mesh.hpp"  // time, my_blocks
 #include "outputs.hpp"
 
 //----------------------------------------------------------------------------------------
-//! \fn void Int2DOutput::ProcessHeader(const string& ext)
+//! \fn void Int2DOutput::ProcessHeader(const std::string& ext, const Mesh *pm)
 //! \brief writes a new or check the existing header of the output file.
 
-void Int2DOutput::ProcessHeader(const std::string& ext) {
+void Int2DOutput::ProcessHeader(const std::string& ext, const Mesh *pm) {
   // Compose the name of the output file.
   fname = output_params.file_basename + '.' + ext;
-  std::cout << "Int2DOutput::ProcessHeader(): fname = '" << fname << "'" << std::endl;
+
+  // Collect the output variables.
+  LoadOutputData(pm->my_blocks(0));
+  std::vector<std::string> varnames;
+  OutputData *pdata = pfirst_data_;
+  while (pdata != nullptr) {
+    switch (pdata->type[0]) {
+      case 'S':  // SCALARS
+        varnames.push_back(pdata->name);
+        break;
+      case 'V':  // VECTORS
+        for (int i = 1; i <= 3; ++i)
+          varnames.push_back(pdata->name + std::to_string(i));
+        break;
+      default:
+        std::stringstream msg;
+        msg << "### FATAL ERROR in Int2DOutput::ProcessHeader" << std::endl
+            << "Unknown output variable type: " << pdata->type << std::endl;
+        ATHENA_ERROR(msg);
+    }
+    pdata = pdata->pnext;
+  }
+  ClearOutputData();
+  for (int i = 0; i < varnames.size(); ++i)
+    std::cout << "::[Int2DOutput::ProcessHeader]:: varname = "
+              << varnames[i] << std::endl;
 }
 
 //----------------------------------------------------------------------------------------

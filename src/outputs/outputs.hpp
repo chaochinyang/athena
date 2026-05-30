@@ -150,11 +150,11 @@ class HistoryOutput : public OutputType {
 
 class Int2DOutput : public OutputType {
  public:
-  explicit Int2DOutput(OutputParameters oparams) : OutputType(oparams) {}
+  explicit Int2DOutput(const Mesh *pm, const OutputParameters &op) : OutputType(op) {}
   virtual void WriteOutputFile(Mesh *pm, ParameterInput *pin, bool flag) = 0;
 
  protected:
-  void ProcessHeader(const std::string& ext);
+  void ProcessHeader(const std::string& ext, const Mesh *pm);
   std::string fname;  // name of the output file
 };
 
@@ -164,9 +164,8 @@ class Int2DOutput : public OutputType {
 
 class IntX1X2Output : public Int2DOutput {
  public:
-  explicit IntX1X2Output(OutputParameters op) : Int2DOutput(op) {
-    ProcessHeader("int12");
-  }
+  explicit IntX1X2Output(const Mesh *pm, const OutputParameters &op)
+  : Int2DOutput(pm, op) { ProcessHeader("int12", pm); }
   void WriteOutputFile(Mesh *pm, ParameterInput *pin, bool flag) override;
 };
 
@@ -176,9 +175,8 @@ class IntX1X2Output : public Int2DOutput {
 
 class IntX1X3Output : public Int2DOutput {
  public:
-  explicit IntX1X3Output(OutputParameters op) : Int2DOutput(op) {
-    ProcessHeader("int13");
-  }
+  explicit IntX1X3Output(const Mesh *pm, const OutputParameters &op)
+  : Int2DOutput(pm, op) { ProcessHeader("int13", pm); }
   void WriteOutputFile(Mesh *pm, ParameterInput *pin, bool flag) override;
 };
 
@@ -188,9 +186,8 @@ class IntX1X3Output : public Int2DOutput {
 
 class IntX2X3Output : public Int2DOutput {
  public:
-  explicit IntX2X3Output(OutputParameters op) : Int2DOutput(op) {
-    ProcessHeader("int23");
-  }
+  explicit IntX2X3Output(const Mesh *pm, const OutputParameters &op)
+  : Int2DOutput(pm, op) { ProcessHeader("int23", pm); }
   void WriteOutputFile(Mesh *pm, ParameterInput *pin, bool flag) override;
 };
 
