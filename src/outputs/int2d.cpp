@@ -15,6 +15,16 @@
 #include "outputs.hpp"
 
 //----------------------------------------------------------------------------------------
+//! \fn void Int2DOutput::ProcessHeader(const string& ext)
+//! \brief writes a new or check the existing header of the output file.
+
+void Int2DOutput::ProcessHeader(const std::string& ext) {
+  // Compose the name of the output file.
+  fname = output_params.file_basename + '.' + ext;
+  std::cout << "Int2DOutput::ProcessHeader(): fname = '" << fname << "'" << std::endl;
+}
+
+//----------------------------------------------------------------------------------------
 //! \fn void IntX1X2Output::WriteOutputFile(Mesh *pm, ParameterInput *pin, bool flag)
 //! \brief integrates the data over x1 and x2 directions and writes the resulting 1D
 //      array in x3.
@@ -24,7 +34,6 @@ void IntX1X2Output::WriteOutputFile(Mesh *pm, ParameterInput *pin, bool flag) {
             << "\n\tt = " << pm->time
             << "\n\tnext_time = " << output_params.next_time
             << "\n\tdt = " << output_params.dt << std::endl;
-  std::cout << "IntX1X2Output: fname = '" << fname << "'" << std::endl;
 
   // Update output parameters.
   output_params.next_time += output_params.dt;
@@ -36,7 +45,6 @@ void IntX1X2Output::WriteOutputFile(Mesh *pm, ParameterInput *pin, bool flag) {
 //      array in x2.
 
 void IntX1X3Output::WriteOutputFile(Mesh *pm, ParameterInput *pin, bool flag) {
-  std::cout << "IntX1X3Output: fname = '" << fname << "'" << std::endl;
   std::stringstream msg;
   msg << "IntX1X3Output: not implemented " << std::endl;
   ATHENA_ERROR(msg);
@@ -48,7 +56,6 @@ void IntX1X3Output::WriteOutputFile(Mesh *pm, ParameterInput *pin, bool flag) {
 //      array in x1.
 
 void IntX2X3Output::WriteOutputFile(Mesh *pm, ParameterInput *pin, bool flag) {
-  std::cout << "IntX2X3Output: fname = '" << fname << "'" << std::endl;
   std::stringstream msg;
   msg << "IntX2X3Output: not implemented " << std::endl;
   ATHENA_ERROR(msg);

@@ -154,6 +154,7 @@ class Int2DOutput : public OutputType {
   virtual void WriteOutputFile(Mesh *pm, ParameterInput *pin, bool flag) = 0;
 
  protected:
+  void ProcessHeader(const std::string& ext);
   std::string fname;  // name of the output file
 };
 
@@ -164,7 +165,7 @@ class Int2DOutput : public OutputType {
 class IntX1X2Output : public Int2DOutput {
  public:
   explicit IntX1X2Output(OutputParameters op) : Int2DOutput(op) {
-    fname = op.file_basename + ".int12";
+    ProcessHeader("int12");
   }
   void WriteOutputFile(Mesh *pm, ParameterInput *pin, bool flag) override;
 };
@@ -176,7 +177,7 @@ class IntX1X2Output : public Int2DOutput {
 class IntX1X3Output : public Int2DOutput {
  public:
   explicit IntX1X3Output(OutputParameters op) : Int2DOutput(op) {
-    fname = op.file_basename + ".int13";
+    ProcessHeader("int13");
   }
   void WriteOutputFile(Mesh *pm, ParameterInput *pin, bool flag) override;
 };
@@ -188,7 +189,7 @@ class IntX1X3Output : public Int2DOutput {
 class IntX2X3Output : public Int2DOutput {
  public:
   explicit IntX2X3Output(OutputParameters op) : Int2DOutput(op) {
-    fname = op.file_basename + ".int23";
+    ProcessHeader("int23");
   }
   void WriteOutputFile(Mesh *pm, ParameterInput *pin, bool flag) override;
 };
