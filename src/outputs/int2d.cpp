@@ -7,6 +7,7 @@
 //! \brief implements non-trivial functions of IntX[123]X[123]Output classes.
 
 // C/C++ headers
+#include <fstream>   // ifstream, ios, ofstream
 #include <iostream>  // cout, endl, <<
 #include <sstream>   // stringstream
 #include <string>    // string, to_string
@@ -26,6 +27,7 @@ void Int2DOutput::ProcessHeader(const std::string& ext, const Mesh *pm) {
 
   // Collect the output variables.
   LoadOutputData(pm->my_blocks(0));
+  std::stringstream msg;
   std::vector<std::string> varnames;
   OutputData *pdata = pfirst_data_;
   while (pdata != nullptr) {
@@ -38,17 +40,44 @@ void Int2DOutput::ProcessHeader(const std::string& ext, const Mesh *pm) {
           varnames.push_back(pdata->name + std::to_string(i));
         break;
       default:
-        std::stringstream msg;
         msg << "### FATAL ERROR in Int2DOutput::ProcessHeader" << std::endl
             << "Unknown output variable type: " << pdata->type << std::endl;
         ATHENA_ERROR(msg);
+        return;
     }
     pdata = pdata->pnext;
   }
   ClearOutputData();
-  for (int i = 0; i < varnames.size(); ++i)
-    std::cout << "::[Int2DOutput::ProcessHeader]:: varname = "
-              << varnames[i] << std::endl;
+
+  // Process the header of the output file.
+  const int nvar = varnames.size();
+  std::ifstream fin(fname, std::ios::in | std::ios::binary);
+  if (fin.is_open()) {
+    // Read and check the number of output variables.
+    int n;
+    fin.read(reinterpret_cast<char*>(&n), sizeof(n));
+    if (n != nvar) {
+      msg << "### FATAL ERROR in Int2DOutput::ProcessHeader" << std::endl
+          << "Inconsistent number of output variables: "
+          << nvar << " requested vs. " << n << " in existing header" << std::endl;
+      ATHENA_ERROR(msg);
+      return;
+    }
+    fin.close();
+  } else { // if (fin.is_open())
+    // Open a new output file for write.
+    std::ofstream fout(fname, std::ios::out | std::ios::binary);
+    if (!fout.is_open()) {
+      msg << "### FATAL ERROR in Int2DOutput::ProcessHeader" << std::endl
+          << "Unable to create output file '" << fname << "'" << std::endl;
+      ATHENA_ERROR(msg);
+      return;
+    }
+
+    // Write the number of output variables.
+    fout.write(reinterpret_cast<const char*>(&nvar), sizeof(nvar));
+    fout.close();
+  } // if (fin.is_open())
 }
 
 //----------------------------------------------------------------------------------------
