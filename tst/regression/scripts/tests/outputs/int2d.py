@@ -34,29 +34,13 @@ athena_read.check_nan_flag = True              # raise exception when encounteri
 
 
 def prepare(**kwargs):
-    """
-    Configure and make the executable.
+    """Configures and makes the executable. """
 
-    This function is called first. It is responsible for calling the configure script and
-    make to create an executable. It takes no inputs and produces no outputs.
-    """
+    # Configure the blast program in spherical-polar coordinates.
+    athena.configure("mpi", "hdf5", "h5double",
+                     prob="blast", coord="spherical_polar", **kwargs)
 
-    # Configure as though we ran
-    #     python configure.py -g -t --prob=shock_tube_gr --coord=minkowski
-    # from the athena/ directory. Note that additional -<flag> command-line arguments can
-    # be specified as additional '<flag>' arguments before the <key>='<value>' arguments
-    # to athena.configure(). Any number of --<key>=<value> command-line arguments can also
-    # be supplied. Note athena.configure() expects the values only to be quoted, e.g.
-    # --<key>='<value>'.
-    athena.configure('g', 't',
-                     prob='gr_shock_tube',
-                     coord='minkowski',
-                     **kwargs)
-
-    # Call make as though we ran
-    #     make clean
-    #     make
-    # from the athena/ directory.
+    # Mke the executable.
     athena.make()
 
 
