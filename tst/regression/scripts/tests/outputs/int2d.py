@@ -45,35 +45,10 @@ def prepare(**kwargs):
 
 
 def run(**kwargs):
-    """
-    Run the executable.
+    """Run the executable in parallel. """
 
-    This function is called second. It is responsible for calling the Athena++ binary in
-    such a way as to produce testable output. It takes no inputs and produces no outputs.
-    """
-
-    # Create list of runtime arguments to override the athinput file. Each element in the
-    # list is simply a string of the form '<block>/<field>=<value>', where the contents of
-    # the string are exactly what one would type on the command line run running Athena++.
-    arguments = ['time/ncycle_out=0',
-                 'job/problem_id=gr_shock_tube',
-                 'output1/file_type=vtk',
-                 'output1/variable=cons',
-                 'output1/dt=0.4',
-                 'time/cfl_number=0.4',
-                 'time/tlim=0.4',
-                 'mesh/nx1=400']
-
-    # Run Athena++ as though we called
-    #     ./athena -i ../inputs/hydro_sr/athinput.mb_1 job/problem_id=gr_shock_tube <...>
-    # from the bin/ directory. Note we omit the leading '../inputs/' below when specifying
-    # the athinput file.)
-    athena.run('hydro_sr/athinput.mb_1', arguments)
-    # No return statement/value is ever required from run(), but returning anything other
-    # than default None will cause run_tests.py to skip executing the optional Lcov cmd
-    # immediately after this module.run() finishes, e.g. if Lcov was already invoked by:
-    # athena.run('hydro_sr/athinput.mb_1', arguments, lcov_test_suffix='mb_1')
-    return 'skip_lcov'
+    athena.mpirun(kwargs["mpirun_cmd"], kwargs["mpirun_opts"], 8,
+                  "hydro/athinput.test_int2d", [])
 
 
 def analyze():
