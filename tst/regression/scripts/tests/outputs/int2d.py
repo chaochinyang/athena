@@ -63,6 +63,11 @@ def analyze():
     datadir = Path("bin")
     int23 = athena_read.int2d(datadir / f"{problem_id}.int23")
 
+    # Find all full snapshots.
+    filelist = sorted(datadir.glob(problem_id + ".out1.*.athdf"))
+    if len(filelist) <= 0:
+        raise RuntimeError(f"No output1 data under {datadir}/. ")
+
     return True
 
     # Read in reference data. The tst/regression/data/ directory has reference runs for
