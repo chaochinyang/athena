@@ -85,4 +85,19 @@ def analyze():
             print(f"Inconsistent timestamps: (int23) {time} vs. (full) {time_ref}")
             analyze_status = False
 
+        # Loop over the blocks.
+        nx1, nx2, nx3 = data["MeshBlockSize"]
+        maxlevel = data["MaxLevel"]
+        for b, xf in enumerate(data["x1f"]):
+            level = data["Levels"][b]
+            loc = data["LogicalLocations"][b]
+
+            # Compare the coordinates.
+            step = 2**(maxlevel - level)
+            start = loc[0] * nx1 * step
+            end = (loc[0] + 1) * nx1 * step + 1
+            if different(int23.xf[start:end:step], xf):
+                print(f"Inconsistent coordinates: level = {level}, location = {loc}")
+                analyze_status = False
+
     return analyze_status
