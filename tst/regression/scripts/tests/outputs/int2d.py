@@ -63,75 +63,15 @@ def analyze():
     datadir = Path("bin")
     int23 = athena_read.int2d(datadir / f"{problem_id}.int23")
 
-    # Find all full snapshots.
+    # Find and loop all full snapshots.
     filelist = sorted(datadir.glob(problem_id + ".out1.*.athdf"))
     if len(filelist) <= 0:
         raise RuntimeError(f"No output1 data under {datadir}/. ")
 
-    return True
-
-    # Read in reference data. The tst/regression/data/ directory has reference runs for
-    # comparing future output of the code. We only need to specify file names starting
-    # with "data/". Now athena_read.vtk() returns four objects: the x-interface locations,
-    # the y-interface locations, the z-interface locations, and the values of the
-    # variables themselves. In a 1D problem we ignore the second and third returned
-    # values, assigning them to the _ variable as is typical Python style.
-    x_ref, _, _, data_ref = athena_read.vtk('data/sr_hydro_shock1_hlle.vtk')
-
-    # Extract the quantities of interest. Suppose we want to check that the total energy
-    # and the x-momentum are the same as those given in the reference dataset. The fourth
-    # object returned by athena_read.vtk() is a dictionary of 3D (scalars) or 4D (vectors)
-    # NumPy arrays, whose keys ('Etot' and 'mom' in this case) are exactly the names of
-    # the arrays as stored in the vtk file. Here we extract the reference values, where
-    # the fourth index specifies which component of the vector quantity to extract. The
-    # choice of slicing will give us 1D arrays without any singleton dimensions.
-    e_ref = data_ref['Etot'][0, 0, :]
-    mx_ref = data_ref['mom'][0, 0, :, 0]
-
-    # Similarly, we extract the newly created values.
-    e_new = -data_new['Etot'][0, 0, :]   # sign flip between SR and GR definitions
-    mx_new = data_new['mom'][0, 0, :, 0]
-
-    # Next we compute the differences between the reference arrays and the newly created
-    # ones in the L^1 sense. That is, given functions f and g, we want
-    #     \int |f(x)-g(x)| dx.
-    # The utility script comparison.l1_diff() does this exactly, conveniently taking N+1
-    # interface locations and N volume-averaged quantities. The two datasets can have
-    # different values of N.
-    error_abs_e = comparison.l1_diff(x_ref, e_ref, x_new, e_new)
-    error_abs_mx = comparison.l1_diff(x_ref, mx_ref, x_new, mx_new)
-
-    # The errors are more meaningful if we account for the length of the domain and the
-    # typical magnitude of the function itself. Fortunately, comparison.l1_norm() computes
-    #     \int |f(x)| dx.
-    # (Note neither comparison.l1_diff() nor comparison.l1_norm() divides by the length of
-    # the domain.)
-    error_rel_e = error_abs_e / comparison.l1_norm(x_ref, e_ref)
-    error_rel_mx = error_abs_mx / comparison.l1_norm(x_ref, mx_ref)
-
-    # Finally, we test that the relative errors in the two quantities are no more than 1%.
-    # If they are, we return False at the very end of the function and file; otherwise
-    # we return True. NumPy provides a way of checking if the error is NaN, which also
-    # indicates something went wrong. The same check can (and should) be enabled
-    # automatically at the point of reading the input files via the athena_read.py
-    # functions by setting "athena_read.check_nan_flag=True" (as done at the top of this
-    # file). Regression test authors should keep in mind the caveats of floating-point
-    # calculations and perform multiple checks for NaNs when necessary.
-
-    # The main test script will record the result and delete both tst/regression/bin/ and
-    # obj/ folders before proceeding on to the next test.
     analyze_status = True
-    if error_rel_e > 0.01 or np.isnan(error_rel_e):
-        analyze_status = False
-    if error_rel_mx > 0.01 or np.isnan(error_rel_mx):
-        analyze_status = False
+    for i, file in enumerate(filelist):
 
-    # Note, if the problem generator in question outputs a unique CSV file containing
-    # quantitative error measurements (e.g. --prob=linear_wave outputs
-    # linearwave-errors.dat when problem/compute_error=true at runtime), then these values
-    # can also be input and used in this analyze() function. It is recommended to use:
-    # athena_read.error_dat('bin/linearwave-errors.dat')
-    # This wrapper function to np.loadtxt() can automatically check for the presence of
-    # NaN values as in the other athena_read.py functions.
+        # Read in one snapshot for manual integration.
+        data = athena_read.athdf(file, raw=True)
 
     return analyze_status
