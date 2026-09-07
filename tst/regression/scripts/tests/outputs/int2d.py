@@ -84,6 +84,7 @@ def analyze():
         if different(time_ref, time):
             print(f"Inconsistent timestamps: (int23) {time} vs. (full) {time_ref}")
             analyze_status = False
+        print(f"Time = {time}")
 
         # Allocate arrays for 2D integrations.
         nx = len(int23.xf) - 1
