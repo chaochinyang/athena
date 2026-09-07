@@ -85,6 +85,11 @@ def analyze():
             print(f"Inconsistent timestamps: (int23) {time} vs. (full) {time_ref}")
             analyze_status = False
 
+        # Allocate arrays for 2D integrations.
+        nx = len(int23.xf) - 1
+        int23_rho_ref = np.zeros(nx,)
+        int23_mom2_ref = np.zeros(nx,)
+
         # Loop over the blocks.
         nx1, nx2, nx3 = data["MeshBlockSize"]
         maxlevel = data["MaxLevel"]
@@ -99,5 +104,15 @@ def analyze():
             if different(int23.xf[start:end:step], xf):
                 print(f"Inconsistent coordinates: level = {level}, location = {loc}")
                 analyze_status = False
+
+        # Compare the integrations of density.
+        if different(int23_rho_ref, int23.rho):
+            print("Inconsistent integration of rho over x2 and x3")
+            analyze_status = False
+
+        # Compare the integrations of the second component of momentum.
+        if different(int23_mom2_ref, int23.mom2):
+            print("Inconsistent integration of mom2 over x2 and x3")
+            analyze_status = False
 
     return analyze_status
