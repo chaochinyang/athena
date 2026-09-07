@@ -30,7 +30,10 @@ import scripts.utils.athena as athena          # utilities for running Athena++
 import scripts.utils.comparison as comparison  # more utilities explicitly for testing
 sys.path.insert(0, '../../vis/python')         # insert path to Python read scripts
 import athena_read                             # utilities for reading Athena++ data # noqa
+
+# Global settings
 athena_read.check_nan_flag = True              # raise exception when encountering NaNs
+problem_id = "int2d"
 
 
 def prepare(**kwargs):
@@ -47,8 +50,9 @@ def prepare(**kwargs):
 def run(**kwargs):
     """Run the executable in parallel. """
 
+    arguments = [f"job/problem_id={problem_id}"]
     athena.mpirun(kwargs["mpirun_cmd"], kwargs["mpirun_opts"], 8,
-                  "hydro/athinput.test_int2d", [])
+                  "hydro/athinput.test_int2d", arguments)
 
 
 def analyze():
