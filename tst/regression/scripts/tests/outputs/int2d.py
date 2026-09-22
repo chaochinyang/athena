@@ -94,15 +94,17 @@ def analyze():
         # Loop over the blocks.
         nx1, nx2, nx3 = data["MeshBlockSize"]
         maxlevel = data["MaxLevel"]
-        for b, xf in enumerate(data["x1f"]):
+        for b in range(data["NumMeshBlocks"]):
+            # Assign shorthands.
             level = data["Levels"][b]
             loc = data["LogicalLocations"][b]
+            x1f, x2f, x3f = data["x1f"][b], data["x2f"][b], data["x3f"][b]
 
             # Compare the coordinates.
             step = 2**(maxlevel - level)
             start = loc[0] * nx1 * step
             end = (loc[0] + 1) * nx1 * step + 1
-            if different(int23.xf[start:end:step], xf):
+            if different(int23.xf[start:end:step], x1f):
                 print(f"Inconsistent coordinates: level = {level}, location = {loc}")
                 analyze_status = False
 
