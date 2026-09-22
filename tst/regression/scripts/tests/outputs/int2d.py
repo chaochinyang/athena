@@ -99,6 +99,8 @@ def analyze():
             level = data["Levels"][b]
             loc = data["LogicalLocations"][b]
             x1f, x2f, x3f = data["x1f"][b], data["x2f"][b], data["x3f"][b]
+            x1v, x2v, x3v = data["x1v"][b], data["x2v"][b], data["x3v"][b]
+            rho, mom2 = data["dens"][b], data["mom2"][b]
 
             # Compare the coordinates.
             step = 2**(maxlevel - level)
@@ -113,6 +115,12 @@ def analyze():
             dx2f = cosx2f[:-1] - cosx2f[1:]
             dx3f = x3f[1:] - x3f[:-1]
             area1 = np.outer(dx2f, dx3f)
+
+            # Find the local integrals.
+            x1v2 = x1v * x1v
+            integrate23 = lambda f: x1v2 * np.tensordot(f, area1, axes=2)
+            int23_rho_loc = integrate23(rho)
+            int23_mom2_loc = integrate23(mom2)
 
         # Compare the integrations of density.
         if different(int23_rho_ref, int23.rho):
