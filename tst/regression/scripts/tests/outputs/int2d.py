@@ -108,6 +108,12 @@ def analyze():
                 print(f"Inconsistent coordinates: level = {level}, location = {loc}")
                 analyze_status = False
 
+            # Find the "area" elements.
+            cosx2f = np.cos(x2f)
+            dx2f = cosx2f[:-1] - cosx2f[1:]
+            dx3f = x3f[1:] - x3f[:-1]
+            area1 = np.outer(dx2f, dx3f)
+
         # Compare the integrations of density.
         if different(int23_rho_ref, int23.rho):
             print("Inconsistent integration of rho over x2 and x3")
