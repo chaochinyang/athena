@@ -92,7 +92,7 @@ def analyze():
         int23_mom2_ref = np.zeros(nx,)
 
         # Loop over the blocks.
-        nx1, nx2, nx3 = data["MeshBlockSize"]
+        nx1b, nx2b, nx3b = data["MeshBlockSize"]
         maxlevel = data["MaxLevel"]
         for b in range(data["NumMeshBlocks"]):
             # Assign shorthands.
@@ -104,8 +104,8 @@ def analyze():
 
             # Compare the coordinates.
             step = 2**(maxlevel - level)
-            start = loc[0] * nx1 * step
-            end = (loc[0] + 1) * nx1 * step + 1
+            start = loc[0] * nx1b * step
+            end = (loc[0] + 1) * nx1b * step + 1
             if different(int23.xf[start:end:step], x1f):
                 print(f"Inconsistent coordinates: level = {level}, location = {loc}")
                 analyze_status = False
