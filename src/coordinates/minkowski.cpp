@@ -39,7 +39,7 @@
 void Coordinates::Initialize(ParameterInput *pin) {
   // Initialize volume-averaged coordinates and spacings: x-direction
   for (int i=il-ng; i<=iu+ng; ++i) {
-    x1v(i) = 0.5 * (x1f(i) + x1f(i+1));
+    x1v(i) = FindX1v(x1f(i), x1f(i+1));
   }
   for (int i=il-ng; i<=iu+ng-1; ++i) {
     dx1v(i) = x1v(i+1) - x1v(i);
@@ -47,11 +47,11 @@ void Coordinates::Initialize(ParameterInput *pin) {
 
   // Initialize volume-averaged coordinates and spacings: y-direction
   if (pmy_block->block_size.nx2 == 1) {
-    x2v(jl) = 0.5 * (x2f(jl) + x2f(jl+1));
+    x2v(jl) = FindX2v(x2f(jl), x2f(jl+1));
     dx2v(jl) = dx2f(jl);
   } else {
     for (int j=jl-ng; j<=ju+ng; ++j) {
-      x2v(j) = 0.5 * (x2f(j) + x2f(j+1));
+      x2v(j) = FindX2v(x2f(j), x2f(j+1));
     }
     for (int j=jl-ng; j<=ju+ng-1; ++j) {
       dx2v(j) = x2v(j+1) - x2v(j);
@@ -60,11 +60,11 @@ void Coordinates::Initialize(ParameterInput *pin) {
 
   // Initialize volume-averaged coordinates and spacings: z-direction
   if (pmy_block->block_size.nx3 == 1) {
-    x3v(kl) = 0.5 * (x3f(kl) + x3f(kl+1));
+    x3v(kl) = FindX3v(x3f(kl), x3f(kl+1));
     dx3v(kl) = dx3f(kl);
   } else {
     for (int k=kl-ng; k<=ku+ng; ++k) {
-      x3v(k) = 0.5 * (x3f(k) + x3f(k+1));
+      x3v(k) = FindX3v(x3f(k), x3f(k+1));
     }
     for (int k=kl-ng; k<=ku+ng-1; ++k) {
       dx3v(k) = x3v(k+1) - x3v(k);
@@ -97,17 +97,14 @@ void Coordinates::Initialize(ParameterInput *pin) {
 //! Functions to find volume-averaged coordinates given lower and upper bounds.
 
 inline Real Coordinates::FindX1v(Real x1l, Real x1u) {
-  throw std::runtime_error("Coordinates::FindX1v(x1l,x1u): not implemented ");
   return 0.5 * (x1l + x1u);
 }
 
 inline Real Coordinates::FindX2v(Real x2l, Real x2u) {
-  throw std::runtime_error("Coordinates::FindX2v(x2l,x2u): not implemented ");
   return 0.5 * (x2l + x2u);
 }
 
 inline Real Coordinates::FindX3v(Real x3l, Real x3u) {
-  throw std::runtime_error("Coordinates::FindX3v(x3l,x3u): not implemented ");
   return 0.5 * (x3l + x3u);
 }
 
