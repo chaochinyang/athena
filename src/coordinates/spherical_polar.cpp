@@ -71,8 +71,7 @@ void Coordinates::Initialize(ParameterInput *pin) {
   // initialize volume-averaged coordinates and spacing
   // x1-direction: x1v = (\int r dV / \int dV) = d(r^4/4)/d(r^3/3)
   for (int i=il-ng; i<=iu+ng; ++i) {
-    x1v(i) = 0.75*(std::pow(x1f(i+1), 4) - std::pow(x1f(i), 4)) /
-             (std::pow(x1f(i+1), 3) - std::pow(x1f(i), 3));
+    x1v(i) = FindX1v(x1f(i), x1f(i+1));
     // reduces to eq for centroid: R_i + 2*R_i*dR_i^2/(12*R_i^2 + dR_i^2)
     // see Mignone (2014) eq 17, e.g.
   }
@@ -87,9 +86,7 @@ void Coordinates::Initialize(ParameterInput *pin) {
     dx2v(jl) = dx2f(jl);
   } else {
     for (int j=jl-ng; j<=ju+ng; ++j) {
-      x2v(j) = ((std::sin(x2f(j+1)) - x2f(j+1)*std::cos(x2f(j+1))) -
-                (std::sin(x2f(j  )) - x2f(j  )*std::cos(x2f(j  ))))/
-               (std::cos(x2f(j  )) - std::cos(x2f(j+1)));
+      x2v(j) = FindX2v(x2f(j), x2f(j+1));
     }
     for (int j=jl-ng; j<=ju+ng-1; ++j) {
       dx2v(j) = x2v(j+1) - x2v(j);
@@ -98,11 +95,11 @@ void Coordinates::Initialize(ParameterInput *pin) {
 
   // x3-direction: x3v = (\int phi dV / \int dV) = dphi/2
   if (pmy_block->block_size.nx3 == 1) {
-    x3v(kl) = 0.5*(x3f(kl+1) + x3f(kl));
+    x3v(kl) = FindX3v(x3f(kl), x3f(kl+1));
     dx3v(kl) = dx3f(kl);
   } else {
     for (int k=kl-ng; k<=ku+ng; ++k) {
-      x3v(k) = 0.5*(x3f(k+1) + x3f(k));
+      x3v(k) = FindX3v(x3f(k), x3f(k+1));
     }
     for (int k=kl-ng; k<=ku+ng-1; ++k) {
       dx3v(k) = x3v(k+1) - x3v(k);
@@ -311,20 +308,19 @@ void Coordinates::Initialize(ParameterInput *pin) {
 //! Functions to find volume-averaged coordinates given lower and upper bounds.
 
 inline Real Coordinates::FindX1v(Real x1l, Real x1u) {
-  throw std::runtime_error("Coordinates::FindX1v(x1l,x1u): not implemented ");
-  return 0.5 * (x1l + x1u);
+  return 0.75 * (std::pow(x1u, 4) - std::pow(x1l, 4))
+              / (std::pow(x1u, 3) - std::pow(x1l, 3));
 }
 
 inline Real Coordinates::FindX2v(Real x2l, Real x2u) {
-  throw std::runtime_error("Coordinates::FindX2v(x2l,x2u): not implemented ");
-  return 0.5 * (x2l + x2u);
+  return ((std::sin(x2u) - x2u * std::cos(x2u)) -
+          (std::sin(x2l) - x2l * std::cos(x2l)))
+         / (std::cos(x2l) - std::cos(x2u));
 }
 
 inline Real Coordinates::FindX3v(Real x3l, Real x3u) {
-  throw std::runtime_error("Coordinates::FindX3v(x3l,x3u): not implemented ");
   return 0.5 * (x3l + x3u);
 }
-
 
 //----------------------------------------------------------------------------------------
 // EdgeXLength functions: compute physical length at cell edge-X as vector
