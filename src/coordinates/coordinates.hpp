@@ -54,9 +54,9 @@ class Coordinates {
 
   // functions...
   // ...to find volume-averaged center
-  Real FindX1v(Real x1l, Real x1u);
-  Real FindX2v(Real x2l, Real x2u);
-  Real FindX3v(Real x3l, Real x3u);
+  static Real FindX1v(Real x1l, Real x1u);
+  static Real FindX2v(Real x2l, Real x2u);
+  static Real FindX3v(Real x3l, Real x3u);
   // ...to compute length of edges
   void Edge1Length(const int k, const int j, const int il, const int iu,
                    AthenaArray<Real> &len);
