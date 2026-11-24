@@ -166,16 +166,16 @@ void Coordinates::Initialize(ParameterInput *pin) {
 //----------------------------------------------------------------------------------------
 //! Functions to find volume-averaged coordinates given lower and upper bounds.
 
-inline Real Coordinates::FindX1v(Real x1l, Real x1u) {
+Real Coordinates::FindX1v(Real x1l, Real x1u) {
   return TWO_3RD * (std::pow(x1u, 3) - std::pow(x1l, 3))
                  / (std::pow(x1u, 2) - std::pow(x1l, 2));
 }
 
-inline Real Coordinates::FindX2v(Real x2l, Real x2u) {
+Real Coordinates::FindX2v(Real x2l, Real x2u) {
   return 0.5 * (x2l + x2u);
 }
 
-inline Real Coordinates::FindX3v(Real x3l, Real x3u) {
+Real Coordinates::FindX3v(Real x3l, Real x3u) {
   return 0.5 * (x3l + x3u);
 }
 

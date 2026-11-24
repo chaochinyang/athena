@@ -274,18 +274,17 @@ void Coordinates::Initialize(ParameterInput *pin) {
 //----------------------------------------------------------------------------------------
 //! Functions to find volume-averaged coordinates given lower and upper bounds.
 
-inline Real Coordinates::FindX1v(Real x1l, Real x1u) {
+Real Coordinates::FindX1v(Real x1l, Real x1u) {
   return std::pow(0.5 * (x1l * x1l * x1l + x1u * x1u * x1u), ONE_3RD);
 }
 
-inline Real Coordinates::FindX2v(Real x2l, Real x2u) {
+Real Coordinates::FindX2v(Real x2l, Real x2u) {
   return std::acos(0.5 * (std::cos(x2l) + std::cos(x2u)));
 }
 
-inline Real Coordinates::FindX3v(Real x3l, Real x3u) {
+Real Coordinates::FindX3v(Real x3l, Real x3u) {
   return 0.5 * (x3l + x3u);
 }
-
 
 //----------------------------------------------------------------------------------------
 // EdgeXLength functions: compute physical length at cell edge-X as vector
