@@ -318,9 +318,6 @@ Real Coordinates::FindX2v(Real x2l, Real x2u) {
          / (std::cos(x2l) - std::cos(x2u));
 }
 
-Real Coordinates::FindX3v(Real x3l, Real x3u) {
-  return 0.5 * (x3l + x3u);
-}
 
 //----------------------------------------------------------------------------------------
 // EdgeXLength functions: compute physical length at cell edge-X as vector

@@ -171,15 +171,6 @@ Real Coordinates::FindX1v(Real x1l, Real x1u) {
                  / (std::pow(x1u, 2) - std::pow(x1l, 2));
 }
 
-Real Coordinates::FindX2v(Real x2l, Real x2u) {
-  return 0.5 * (x2l + x2u);
-}
-
-Real Coordinates::FindX3v(Real x3l, Real x3u) {
-  return 0.5 * (x3l + x3u);
-}
-
-
 //----------------------------------------------------------------------------------------
 // EdgeXLength functions: compute physical length at cell edge-X as vector
 // Only overwrite functions that differ from implementation in base class

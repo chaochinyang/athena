@@ -337,6 +337,22 @@ __attribute__((weak)) Coordinates::~Coordinates() {}
 
 
 //----------------------------------------------------------------------------------------
+//! Functions to find volume-averaged coordinates given lower and upper bounds.
+
+Real __attribute__((weak)) Coordinates::FindX1v(Real x1l, Real x1u) {
+  return 0.5 * (x1l + x1u);
+}
+
+Real __attribute__((weak)) Coordinates::FindX2v(Real x2l, Real x2u) {
+  return 0.5 * (x2l + x2u);
+}
+
+Real __attribute__((weak)) Coordinates::FindX3v(Real x3l, Real x3u) {
+  return 0.5 * (x3l + x3u);
+}
+
+
+//----------------------------------------------------------------------------------------
 // EdgeXLength functions: compute physical length at cell edge-X as vector
 // Edge1(i,j,k) located at (i,j-1/2,k-1/2), i.e. (x1v(i), x2f(j), x3f(k))
 
