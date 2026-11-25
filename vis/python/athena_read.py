@@ -989,9 +989,10 @@ def int2d(filename):
             size = unpack("=i", f.read(intsize))[0]
             varnames.append(f.read(size).decode())
 
-        # Read the coordinates of cell edges in the third dimension.
+        # Read the coordinates of cell edges and centers in the third dimension.
         nx = unpack("=i", f.read(intsize))[0]
         xf = np.frombuffer(f.read((nx+1) * realsize), dtype=dtype)
+        xv = np.frombuffer(f.read((nx) * realsize), dtype=dtype)
 
         # Loop over the time series.
         arraysize = nx * realsize
@@ -1014,8 +1015,8 @@ def int2d(filename):
                     integrals.append(np.frombuffer(f.read(arraysize), dtype=dtype))
 
         # Construct and return a namedtuple.
-        names = ["xf", "time"] + varnames
-        pairs = dict(zip(names, [xf, time] + integrals))
+        names = ["xf", "xv", "time"] + varnames
+        pairs = dict(zip(names, [xf, xv, time] + integrals))
         return namedtuple("Int2D", names)(**pairs)
 
 

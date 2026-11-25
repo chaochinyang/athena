@@ -200,9 +200,17 @@ void Int2DOutput::ProcessHeader(const std::string& ext, const Mesh *pm) {
       if (size > 0) fout.write(it->data(), size);
     }
 
-    // Write the coordinates in the third dimension.
+    // Write the number of cells in the third dimension at maximum level.
     fout.write(reinterpret_cast<const char*>(&nx), sizeof(nx));
+
+    // Write the edge coordinates in the third dimension.
     for (std::vector<Real>::iterator it = xf.begin(); it != xf.end(); ++it) {
+      const Real x = *it;
+      fout.write(reinterpret_cast<const char*>(&x), sizeof(x));
+    }
+
+    // Write the center coordinates in the third dimension.
+    for (std::vector<Real>::iterator it = xv.begin(); it != xv.end(); ++it) {
       const Real x = *it;
       fout.write(reinterpret_cast<const char*>(&x), sizeof(x));
     }
