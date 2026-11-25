@@ -214,45 +214,60 @@ void Int2DOutput::ProcessHeader(const std::string& ext, const Mesh *pm) {
 //----------------------------------------------------------------------------------------
 //! \fn void IntX1X2Output::SetThirdDim(const Mesh *pm)
 //! \brief constructs the coordinates in the X3 dimension.
-// TODO(ccyang): consider the case of mesh refinement.
 
 void IntX1X2Output::SetThirdDim(const Mesh *pm) {
   const bool uniform = pm->use_uniform_meshgen_fn_[X3DIR];
-  xf.clear();
   nx = pm->mesh_size.nx3 << (pm->f3 ? pm->max_level - pm->root_level : 0);
+  // Find cell edges.
+  xf.clear();
   for (int i = 0; i <= nx; ++i) {
     const Real rx = ComputeMeshGeneratorX(i, nx, uniform);
     xf.push_back(pm->MeshGenerator_[X3DIR](rx, pm->mesh_size));
+  }
+  // Find cell centers.
+  xv.clear();
+  for (int i = 0; i < nx; ++i) {
+    xv.push_back(Coordinates::FindX3v(xf[i], xf[i+1]));
   }
 }
 
 //----------------------------------------------------------------------------------------
 //! \fn void IntX1X3Output::SetThirdDim(const Mesh *pm)
 //! \brief constructs the coordinates in the X2 dimension.
-// TODO(ccyang): consider the case of mesh refinement.
 
 void IntX1X3Output::SetThirdDim(const Mesh *pm) {
   const bool uniform = pm->use_uniform_meshgen_fn_[X2DIR];
-  xf.clear();
   nx = pm->mesh_size.nx2 << (pm->f2 ? pm->max_level - pm->root_level : 0);
+  // Find cell edges.
+  xf.clear();
   for (int i = 0; i <= nx; ++i) {
     const Real rx = ComputeMeshGeneratorX(i, nx, uniform);
     xf.push_back(pm->MeshGenerator_[X2DIR](rx, pm->mesh_size));
+  }
+  // Find cell centers.
+  xv.clear();
+  for (int i = 0; i < nx; ++i) {
+    xv.push_back(Coordinates::FindX2v(xf[i], xf[i+1]));
   }
 }
 
 //----------------------------------------------------------------------------------------
 //! \fn void IntX2X3Output::SetThirdDim(const Mesh *pm)
 //! \brief constructs the coordinates in the X1 dimension.
-// TODO(ccyang): consider the case of mesh refinement.
 
 void IntX2X3Output::SetThirdDim(const Mesh *pm) {
   const bool uniform = pm->use_uniform_meshgen_fn_[X1DIR];
-  xf.clear();
   nx = pm->mesh_size.nx1 << (pm->max_level - pm->root_level);
+  // Find cell edges.
+  xf.clear();
   for (int i = 0; i <= nx; ++i) {
     const Real rx = ComputeMeshGeneratorX(i, nx, uniform);
     xf.push_back(pm->MeshGenerator_[X1DIR](rx, pm->mesh_size));
+  }
+  // Find cell centers.
+  xv.clear();
+  for (int i = 0; i < nx; ++i) {
+    xv.push_back(Coordinates::FindX1v(xf[i], xf[i+1]));
   }
 }
 
