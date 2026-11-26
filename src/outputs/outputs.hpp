@@ -163,6 +163,7 @@ class Int2DOutput : public OutputType {
   // Instance variables
   std::string fname;     // name of the output file
   std::vector<Real> xf;  // coordinates of cell edges in the third dimension
+  std::vector<Real> xv;  // coordinates of volume-averaged centers in the third dimension
   int nx;  // number of cells in the third dimension
 
   // Constructor helper

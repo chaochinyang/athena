@@ -53,6 +53,10 @@ class Coordinates {
   AthenaArray<Real> h2v, dh2vd1, h31v, h32v, dh31vd1, dh32vd2;
 
   // functions...
+  // ...to find volume-averaged center
+  static Real FindX1v(Real x1l, Real x1u);
+  static Real FindX2v(Real x2l, Real x2u);
+  static Real FindX3v(Real x3l, Real x3u);
   // ...to compute length of edges
   void Edge1Length(const int k, const int j, const int il, const int iu,
                    AthenaArray<Real> &len);

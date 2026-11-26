@@ -69,9 +69,7 @@ void Coordinates::Initialize(ParameterInput *pin) {
 
   // Initialize volume-averaged coordinates and spacings: r-direction
   for (int i=ill; i<=iuu; ++i) {
-    Real r_m = x1f(i);
-    Real r_p = x1f(i+1);
-    x1v(i) = 0.5 * (r_m + r_p);  // at least 2nd-order accurate
+    x1v(i) = FindX1v(x1f(i), x1f(i+1));
   }
   for (int i=ill; i<=iuu-1; ++i) {
     dx1v(i) = x1v(i+1) - x1v(i);
@@ -79,15 +77,11 @@ void Coordinates::Initialize(ParameterInput *pin) {
 
   // Initialize volume-averaged coordinates and spacings: theta-direction
   if (block_size.nx2 == 1) {
-    Real theta_m = x2f(jl);
-    Real theta_p = x2f(jl+1);
-    x2v(jl) = 0.5 * (theta_m + theta_p);  // at least 2nd-order accurate
+    x2v(jl) = FindX2v(x2f(jl), x2f(jl+1));
     dx2v(jl) = dx2f(jl);
   } else {
     for (int j=jll; j<=juu; ++j) {
-      Real theta_m = x2f(j);
-      Real theta_p = x2f(j+1);
-      x2v(j) = 0.5 * (theta_m + theta_p);  // at least 2nd-order accurate
+      x2v(j) = FindX2v(x2f(j) + x2f(j+1));
     }
     for (int j=jll; j<=juu-1; ++j) {
       dx2v(j) = x2v(j+1) - x2v(j);
@@ -96,15 +90,11 @@ void Coordinates::Initialize(ParameterInput *pin) {
 
   // Initialize volume-averaged coordinates and spacings: phi-direction
   if (block_size.nx3 == 1) {
-    Real phi_m = x3f(kl);
-    Real phi_p = x3f(kl+1);
-    x3v(kl) = 0.5 * (phi_m + phi_p);  // at least 2nd-order accurate
+    x3v(kl) = FindX3v(x3f(kl), x3f(kl+1));
     dx3v(kl) = dx3f(kl);
   } else {
     for (int k=kll; k<=kuu; ++k) {
-      Real phi_m = x3f(k);
-      Real phi_p = x3f(k+1);
-      x3v(k) = 0.5 * (phi_m + phi_p);  // at least 2nd-order accurate
+      x3v(k) = FindX3v(x3f(k), x3f(k+1));
     }
     for (int k=kll; k<=kuu-1; ++k) {
       dx3v(k) = x3v(k+1) - x3v(k);
@@ -390,7 +380,6 @@ void Coordinates::Initialize(ParameterInput *pin) {
     }
   }
 }
-
 
 //----------------------------------------------------------------------------------------
 // EdgeXLength functions: compute physical length at cell edge-X as vector

@@ -39,7 +39,7 @@
 void Coordinates::Initialize(ParameterInput *pin) {
   // Initialize volume-averaged coordinates and spacings: x-direction
   for (int i=il-ng; i<=iu+ng; ++i) {
-    x1v(i) = 0.5 * (x1f(i) + x1f(i+1));
+    x1v(i) = FindX1v(x1f(i), x1f(i+1));
   }
   for (int i=il-ng; i<=iu+ng-1; ++i) {
     dx1v(i) = x1v(i+1) - x1v(i);
@@ -47,11 +47,11 @@ void Coordinates::Initialize(ParameterInput *pin) {
 
   // Initialize volume-averaged coordinates and spacings: y-direction
   if (pmy_block->block_size.nx2 == 1) {
-    x2v(jl) = 0.5 * (x2f(jl) + x2f(jl+1));
+    x2v(jl) = FindX2v(x2f(jl), x2f(jl+1));
     dx2v(jl) = dx2f(jl);
   } else {
     for (int j=jl-ng; j<=ju+ng; ++j) {
-      x2v(j) = 0.5 * (x2f(j) + x2f(j+1));
+      x2v(j) = FindX2v(x2f(j), x2f(j+1));
     }
     for (int j=jl-ng; j<=ju+ng-1; ++j) {
       dx2v(j) = x2v(j+1) - x2v(j);
@@ -60,11 +60,11 @@ void Coordinates::Initialize(ParameterInput *pin) {
 
   // Initialize volume-averaged coordinates and spacings: z-direction
   if (pmy_block->block_size.nx3 == 1) {
-    x3v(kl) = 0.5 * (x3f(kl) + x3f(kl+1));
+    x3v(kl) = FindX3v(x3f(kl), x3f(kl+1));
     dx3v(kl) = dx3f(kl);
   } else {
     for (int k=kl-ng; k<=ku+ng; ++k) {
-      x3v(k) = 0.5 * (x3f(k) + x3f(k+1));
+      x3v(k) = FindX3v(x3f(k), x3f(k+1));
     }
     for (int k=kl-ng; k<=ku+ng-1; ++k) {
       dx3v(k) = x3v(k+1) - x3v(k);
@@ -92,7 +92,6 @@ void Coordinates::Initialize(ParameterInput *pin) {
     }
   }
 }
-
 
 //----------------------------------------------------------------------------------------
 // Function for computing cell-centered metric coefficients

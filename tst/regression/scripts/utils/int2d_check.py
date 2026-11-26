@@ -109,7 +109,7 @@ def check(basename, ext, mesh, coord, label):
     """Compare basename.ext with integrals computed from basename.block*.out1.*.tab."""
     status = True
     out = athena_read.int2d('bin/{}.{}'.format(basename, ext))
-    varnames = list(out._fields[2:])
+    varnames = list(out._fields[3:])
     time = np.atleast_1d(out.time)
     xf = np.asarray(out.xf)
 
